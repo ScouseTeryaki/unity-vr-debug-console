@@ -14,12 +14,12 @@ public class DebugLogs
 
     public DebugLogs()
     {
-        storedLogs.OnAdd += OnLogRecieved;
-        storedWarnings.OnAdd += OnLogRecieved;
-        storedErrors.OnAdd += OnLogRecieved;
+        storedLogs.OnAdd.AddListener(OnLogRecieved);
+        storedWarnings.OnAdd.AddListener(OnLogRecieved);
+        storedErrors.OnAdd.AddListener(OnLogRecieved);
     }
 
-    protected virtual void OnLogRecieved(object sender, EventArgs args)
+    protected virtual void OnLogRecieved()
     {
         if (OnLog != null)
         {
@@ -68,7 +68,7 @@ public class DebugLogs
 
 public class DebugLog : List<string>
 {
-    public event EventHandler OnAdd;
+    public UnityEvent OnAdd = new UnityEvent();
 
     public new void Add(string item)
     {
@@ -88,13 +88,13 @@ public class DebugLog : List<string>
             
         base.Add(item);
 
-        OnAdd?.Invoke(this, null);
+        OnAdd.Invoke();
     }
 
     public new void Clear()
     {
         base.Clear();
-        OnAdd?.Invoke(this, null);
+        OnAdd.Invoke();
     }
 
     private string GetLogData(string log)

@@ -1,5 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +12,12 @@ public class DebugDisplay : MonoBehaviour
     private TMP_Dropdown dropdown;
     [SerializeField]
     private Button clearButton;
+    [SerializeField]
+    private TMP_Text logCounterText;
+    [SerializeField]
+    private TMP_Text warningCounterText;
+    [SerializeField]
+    private TMP_Text errorCounterText;
 
     private DebugLogs debugLogs = new DebugLogs();
 
@@ -20,12 +25,16 @@ public class DebugDisplay : MonoBehaviour
 
     private void Start()
     {
+        // UI Events
         dropdown.onValueChanged.AddListener(DropdownChanged);
-        debugLogs.OnLog.AddListener(UpdateDisplay);
-        
         clearButton.onClick.AddListener(() => debugLogs.ClearLogByType(currentLogType));
+        
+        // Debug Log Events
+        debugLogs.OnLog.AddListener(UpdateDisplay);
+        debugLogs.storedLogs.OnAdd.AddListener(() => IncrementTextCounter(logCounterText));
+        debugLogs.storedWarnings.OnAdd.AddListener(() => IncrementTextCounter(warningCounterText));
+        debugLogs.storedErrors.OnAdd.AddListener(() => IncrementTextCounter(errorCounterText));
     }
-
     private void OnEnable() 
     {
         Application.logMessageReceived += HandleLog;
@@ -34,6 +43,20 @@ public class DebugDisplay : MonoBehaviour
     private void OnDisable() 
     {
         Application.logMessageReceived -= HandleLog;
+    }
+
+    private void IncrementTextCounter(TMP_Text textField)
+    {
+        int count;
+        if (Int32.TryParse(textField.text, out count))
+        {   
+            count += 1;
+            textField.text = count.ToString();
+        }
+        else
+        {
+            Debug.LogError("Debug counter failed to parse!");
+        }
     }
 
     private void DropdownChanged(int value)
