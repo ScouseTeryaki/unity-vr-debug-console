@@ -9,6 +9,8 @@ public class DebugLogs
     public DebugLog storedLogs {get; set;} = new DebugLog();
     public DebugLog storedWarnings {get; set;} = new DebugLog();
     public DebugLog storedErrors { get; set; } = new DebugLog();
+    public DebugLog storedExceptions { get; set; } = new DebugLog();
+    public DebugLog storedAsserts { get; set; } = new DebugLog();
 
     public UnityEvent OnLog = new UnityEvent();
 
@@ -17,6 +19,8 @@ public class DebugLogs
         storedLogs.OnAdd.AddListener(OnLogRecieved);
         storedWarnings.OnAdd.AddListener(OnLogRecieved);
         storedErrors.OnAdd.AddListener(OnLogRecieved);
+        storedExceptions.OnAdd.AddListener(OnLogRecieved);
+        storedAsserts.OnAdd.AddListener(OnLogRecieved);
     }
 
     protected virtual void OnLogRecieved()
@@ -26,28 +30,10 @@ public class DebugLogs
             OnLog.Invoke();
         }
     }
-
-    public void ClearAllLogs()
-    {
-        storedLogs = new DebugLog();
-        storedWarnings = new DebugLog();
-        storedErrors = new DebugLog();
-    }
-
     public void ClearLogByType(LogType logType)
     {
-        switch (logType)
-        {
-            case LogType.Log:
-                storedLogs.Clear();
-                break;
-            case LogType.Warning:
-                storedWarnings.Clear();
-                break;
-            case LogType.Error:
-                storedErrors.Clear();
-                break;
-        }
+        DebugLog logs = GetLogsFromType(logType);
+        logs.Clear();
     }
 
     public DebugLog GetLogsFromType(LogType logType)
@@ -60,6 +46,10 @@ public class DebugLogs
                 return storedWarnings;
             case LogType.Error:
                 return storedErrors;
+            case LogType.Exception:
+                return storedExceptions;
+            case LogType.Assert:
+                return storedAsserts;
             default:
                 return storedLogs;
         }

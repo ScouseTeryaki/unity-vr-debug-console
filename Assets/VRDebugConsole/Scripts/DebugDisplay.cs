@@ -20,7 +20,6 @@ public class DebugDisplay : MonoBehaviour
     private TMP_Text errorCounterText;
 
     private DebugLogs debugLogs = new DebugLogs();
-
     private LogType currentLogType = LogType.Log;
 
     private void Start()
@@ -102,6 +101,10 @@ public class DebugDisplay : MonoBehaviour
                 return LogType.Warning;
             case 2:
                 return LogType.Error;
+            case 3:
+                return LogType.Exception;
+            case 4:
+                return LogType.Assert;
             default:
                 return LogType.Log;
         }
