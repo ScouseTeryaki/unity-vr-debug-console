@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DebugLogger : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class DebugLogger : MonoBehaviour
 
     private void LogTest()
     {
-        Debug.Log("Log Test");
+        float rand = Random.Range(0.0f, 10.0f);
+        Debug.Log("Key: " + rand);
     }
 
     private void WarningTest()

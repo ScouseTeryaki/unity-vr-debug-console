@@ -801,7 +801,7 @@ GameObject:
   - component: {fileID: 1117065562}
   - component: {fileID: 1117065565}
   - component: {fileID: 1117065564}
-  - component: {fileID: 1117065563}
+  - component: {fileID: 5120804447257161162}
   m_Layer: 0
   m_Name: Dropdown
   m_TagString: Untagged
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1117065563
+--- !u!114 &5120804447257161162
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1117065561}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Script: {fileID: 11500000, guid: f13adecce48ce47ba8183dc70a8432c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -927,8 +927,6 @@ MonoBehaviour:
       m_Image: {fileID: 21300000, guid: db38889fea9e941b5b0c6c0a87dde8ed, type: 3}
     - m_Text: Error
       m_Image: {fileID: 21300000, guid: c89d1039575b94494b72b95bd5bf9b2d, type: 3}
-    - m_Text: Exception
-      m_Image: {fileID: 21300000, guid: 30c42b8be3cbc460dbb93b4777438029, type: 3}
     - m_Text: Assert
       m_Image: {fileID: 21300000, guid: a9e9bd347b1964c4f8711e4a2a409a74, type: 3}
   m_OnValueChanged:
@@ -1801,6 +1799,7 @@ GameObject:
   - component: {fileID: 4795972909988534235}
   - component: {fileID: 4795972909988534234}
   - component: {fileID: 2135961004361150849}
+  - component: {fileID: 8019306595652048468}
   m_Layer: 0
   m_Name: DebugUI
   m_TagString: Untagged
@@ -1903,11 +1902,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 1366082070454431636}
-  dropdown: {fileID: 1117065563}
+  dropdown: {fileID: 0}
   clearButton: {fileID: 7088394239088142510}
   logCounterText: {fileID: 7088394239546139737}
   warningCounterText: {fileID: 7088394239453073441}
   errorCounterText: {fileID: 7088394240057075959}
+--- !u!114 &8019306595652048468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4795972909988534236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9620f021c6032479fbe87e919d47cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4795972910796300288
 GameObject:
   m_ObjectHideFlags: 0
