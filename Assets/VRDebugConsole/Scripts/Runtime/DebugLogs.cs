@@ -6,11 +6,11 @@ using UnityEngine.Events;
 namespace Lightwing.VRDebugConsole {
     public class DebugLogs : MonoBehaviour
     {
-        public Logs storedLogs {get; set;} = new Logs();
-        public Logs storedWarnings {get; set;} = new Logs();
-        public Logs storedErrors { get; set; } = new Logs();
-        public Logs storedExceptions { get; set; } = new Logs();
-        public Logs storedAsserts { get; set; } = new Logs();
+        public Log storedLogs {get; set;} = new Log();
+        public Log storedWarnings {get; set;} = new Log();
+        public Log storedErrors { get; set; } = new Log();
+        public Log storedExceptions { get; set; } = new Log();
+        public Log storedAsserts { get; set; } = new Log();
 
         public UnityEvent OnUpdate = new UnityEvent();
 
@@ -39,10 +39,10 @@ namespace Lightwing.VRDebugConsole {
             Application.logMessageReceived -= HandleLog;
         }
 
-        private void HandleLog(string log, string stackTrace, LogType type)
+        private void HandleLog(string logString, string stackTrace, LogType type)
         {
-            Logs logs = GetLogsFromType(type);
-            logs.Add(log, stackTrace);
+            Log log = GetLogFromType(type);
+            log.Add(logString, stackTrace);
         }
 
         protected virtual void OnLogUpdate()
@@ -52,15 +52,35 @@ namespace Lightwing.VRDebugConsole {
                 OnUpdate.Invoke();
             }
         }
-        public void ClearLogByType(LogType logType)
+        public void ClearLogsByTypes(List<LogType> logType)
         {
-            Logs logs = GetLogsFromType(logType);
-            logs.Clear();
+            List<Log> logs = GetLogsFromTypes(logType);
+            foreach (Log log in logs)
+            {
+                log.Clear();
+            }
         }
 
-        public Logs GetLogsFromType(LogType logType)
+        public List<Log> GetLogsFromTypes(List<LogType> logTypes)
         {
-            switch (logType)
+            List<Log> log = new List<Log>();
+            try 
+            {
+                foreach (LogType type in logTypes)
+                {
+                    log.Add(GetLogFromType(type));
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.LogError("Debug option has no selected log types!");
+            }
+            return log;
+        }
+
+        public Log GetLogFromType(LogType type)
+        {
+            switch (type)
             {
                 case LogType.Log:
                     return storedLogs;
@@ -78,7 +98,7 @@ namespace Lightwing.VRDebugConsole {
         }
     }
 
-    public class Logs 
+    public class Log 
     {
         public List<string> logData { get; private set; } = new List<string>();
         public List<string> logKey { get; private set; } = new List<string>();

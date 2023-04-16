@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Lightwing.VRDebugConsole {
     [CreateAssetMenu(fileName = "Dropdown Option", menuName = "VRDebugConsole/DropdownOption", order = 1)]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,12 @@ namespace Lightwing.VRDebugConsole {
 
         private DebugLogs debugLogs;
 
-        private LogType currentLogType = LogType.Log;
+        private List<LogType> currentLogTypes;
+
+        private void Awake()
+        {
+            currentLogTypes = dropdown.options[0].types;
+        }
 
         private void Start()
         {
@@ -31,7 +37,7 @@ namespace Lightwing.VRDebugConsole {
 
             // UI Events
             dropdown.onValueChanged.AddListener(DropdownChanged);
-            clearButton.onClick.AddListener(() => debugLogs.ClearLogByType(currentLogType));
+            clearButton.onClick.AddListener(() => debugLogs.ClearLogsByTypes(currentLogTypes));
             
             // Debug Log Events
             debugLogs.OnUpdate.AddListener(UpdateDisplay);
@@ -66,47 +72,30 @@ namespace Lightwing.VRDebugConsole {
 
         private void DropdownChanged(int value)
         {
-            currentLogType = DropdownValueToLogType(value);
-            Logs currentLog = debugLogs.GetLogsFromType(currentLogType);
-            DisplayLogs(currentLog);
+            currentLogTypes = dropdown.options[value].types;
+            List<Log> currentLogs = debugLogs.GetLogsFromTypes(currentLogTypes);
+            DisplayLogs(currentLogs);
         }
 
         private void UpdateDisplay()
         {
-            Logs currentLog = debugLogs.GetLogsFromType(currentLogType);
-            DisplayLogs(currentLog);
+            List<Log> currentLogs = debugLogs.GetLogsFromTypes(currentLogTypes);
+            DisplayLogs(currentLogs);
         }
 
-        private void DisplayLogs(Logs logs)
+        private void DisplayLogs(List<Log> logs)
         {
-            string displayText = "";
-            for (int index = 0; index < logs.logData.Count; index++)
+            foreach (Log log in logs)
             {
-                string log = logs.logData[index];
-                string logTime = logs.logTime[index];
-                displayText += String.Format("{0}: {1}\n", logTime, log);
-            }
-            display.text = displayText;
-        }
-
-        private LogType DropdownValueToLogType(int value)
-        {
-            switch (value)
-            {
-                case 0:
-                    return LogType.Log;
-                case 1:
-                    return LogType.Warning;
-                case 2:
-                    return LogType.Error;
-                case 3:
-                    return LogType.Exception;
-                case 4:
-                    return LogType.Assert;
-                default:
-                    return LogType.Log;
+                string displayText = "";
+                for (int index = 0; index < log.logData.Count; index++)
+                {
+                    string logText = log.logData[index];
+                    string logTime = log.logTime[index];
+                    displayText += String.Format("{0}: {1}\n", logTime, logText);
+                }
+                display.text = displayText;
             }
         }
-
     }
 }

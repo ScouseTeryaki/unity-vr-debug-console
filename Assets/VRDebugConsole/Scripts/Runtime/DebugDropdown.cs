@@ -26,7 +26,7 @@ namespace Lightwing.VRDebugConsole {
             /// <summary>
             /// The log types associated with the option.
             /// </summary>
-            public List<LogType> type { get { return m_Option.optionLogTypes; } }
+            public List<LogType> types { get { return m_Option.optionLogTypes; } }
 
             public DebugOption option { get { return m_Option; } set { m_Option = value; } }
 
